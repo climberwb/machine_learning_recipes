@@ -1,4 +1,8 @@
 # left on 5:58
+from scipy.spatial import distance
+
+def euc(a,b):
+    return distance.euclidean(a,b)
 import random
 class ScrappyKNN():
     def fit(self,X_train,y_train):
@@ -8,9 +12,21 @@ class ScrappyKNN():
     def predict(self, X_test):
         predictions = []
         for row in X_test:
-            label = random.choice(self.y_train)
+            label = self.closest(row)
             predictions.append(label)
         return predictions
+        
+    def closest(self,row):
+        closest_index=0
+        closest_distance = euc(self.X_train[0],row)
+        for index in range(1,len(self.X_train)-1):
+            distance = euc(self.X_train[index],row)
+            if(distance < closest_distance):
+                closest_distance = distance
+                closest_index=index
+        return self.y_train[closest_index]
+        
+            
 
 
 import numpy as np
